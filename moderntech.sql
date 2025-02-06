@@ -66,6 +66,8 @@ UPDATE `moderntech`.`employees` SET `positionId` = '8', `departmentId` = '5' WHE
 UPDATE `moderntech`.`employees` SET `positionId` = '9', `departmentId` = '8' WHERE (`employeeId` = '9');
 UPDATE `moderntech`.`employees` SET `positionId` = '10', `departmentId` = '9' WHERE (`employeeId` = '10');
 
+
+
 CREATE TABLE Payroll (
     payrollId INT AUTO_INCREMENT PRIMARY KEY,
     employeeId INT,
@@ -180,3 +182,56 @@ INSERT INTO `moderntech`.`leaverequests` (`employeeId`, `date`, `reason`, `statu
 INSERT INTO `moderntech`.`leaverequests` (`employeeId`, `date`, `reason`, `status`) VALUES ('8', '2024-12-02', 'Medical Appointment', 'Approved');
 INSERT INTO `moderntech`.`leaverequests` (`employeeId`, `date`, `reason`, `status`) VALUES ('9', '2024-11-19', 'Childcare', 'Denied');
 INSERT INTO `moderntech`.`leaverequests` (`employeeId`, `date`, `reason`, `status`) VALUES ('10', '2024-12-03', 'Vacation', 'Pending');
+
+
+CREATE TABLE `moderntech`.`users` (
+  `username` VARCHAR(100) NOT NULL,
+  `password` VARCHAR(255) NOT NULL,
+  `role` ENUM('admin', 'employee') NOT NULL,
+  `employeeId` INT NOT NULL,
+  PRIMARY KEY (`username`),
+  UNIQUE INDEX `username_UNIQUE` (`username` ASC) VISIBLE,
+  INDEX `users_ibfk_1_idx` (`employeeId` ASC) VISIBLE,
+  CONSTRAINT `users_ibfk_1`
+    FOREIGN KEY (`employeeId`)
+    REFERENCES `moderntech`.`employees` (`employeeId`)
+    ON DELETE RESTRICT
+    ON UPDATE RESTRICT);
+
+ALTER TABLE Employees
+ADD COLUMN previousPositionStartYear YEAR NULL,
+ADD COLUMN previousPositionEndYear YEAR NULL;
+
+ALTER TABLE employees
+DROP COLUMN employmentHistory;
+
+UPDATE employees
+ SET previousPositionStartYear = '2015', previousPositionEndYear = '2018'
+ WHERE employeeId = 1;
+UPDATE employees
+ SET previousPositionStartYear = '2013', previousPositionEndYear = '2017'
+ WHERE employeeId = 2;
+UPDATE employees
+ SET previousPositionStartYear = '2018', previousPositionEndYear = NULL
+ WHERE employeeId = 3;
+ UPDATE employees
+ SET previousPositionStartYear = '2020', previousPositionEndYear = NULL
+ WHERE employeeId = 4;
+ UPDATE employees
+ SET previousPositionStartYear = '2019', previousPositionEndYear = NULL
+ WHERE employeeId = 5;
+ UPDATE employees
+ SET previousPositionStartYear = '2016', previousPositionEndYear = NULL
+ WHERE employeeId = 6;
+ UPDATE employees
+ SET previousPositionStartYear = '2017', previousPositionEndYear = NULL
+ WHERE employeeId = 7;
+ UPDATE employees
+ SET previousPositionStartYear = '2021', previousPositionEndYear = NULL
+ WHERE employeeId = 8;
+ UPDATE employees
+ SET previousPositionStartYear = '2018', previousPositionEndYear = NULL
+ WHERE employeeId = 9;
+ UPDATE employees
+ SET previousPositionStartYear = '2016', previousPositionEndYear = NULL
+ WHERE employeeId = 10;
